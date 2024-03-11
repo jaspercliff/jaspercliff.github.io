@@ -1,1 +1,5 @@
-site_name: java learn note
+site_name: java
+nav:
+  - Home: index.md
+  - About: about.md
+theme: readthedocs
