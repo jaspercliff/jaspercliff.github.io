@@ -1,5 +1,32 @@
-site_name: java
-nav:
-  - Home: index.md
-  - About: about.md
-theme: readthedocs
+# project information
+site_name: jasper note
+site_author: jasper
+site_description: java learn note
+theme:
+  name: material
+  favicon: /assets/img/favicon.ico
+  logo: /assets/img/logo.png
+  features:
+  - navigation.instant
+  - navigation.top
+  - search.suggest
+  - search.highlight
+  - navigation.path
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.sections
+extra_css:
+  - assets/stylesheets/extra.css
+extra_javascript:
+  - assets/javascripts/extra.js  
+extra:
+  consent:
+    title: Cookie consent
+    description: >- 
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+plugins:
+  - search
+# Page tree
