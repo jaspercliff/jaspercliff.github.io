@@ -2,6 +2,7 @@
 site_name: jasper note
 site_author: jasper
 site_description: java learn note
+repo_url: https://github.com/jaspercliff/jaspercliff.github.io.git
 theme:
   name: material
   favicon: /assets/img/favicon.ico
