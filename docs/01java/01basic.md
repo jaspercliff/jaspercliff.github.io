@@ -398,8 +398,240 @@ int c = a >>> 2; // c = 1073741822 = 0011 1111 1111 1111 1111 1110
 ```
 
 位运算在底层编程、图形处理、加密算法等领域非常有用。它们的操作速度快，因为处理器直接在硬件级别上对位进行操作。但是，位运算的代码可读性比较差，因此在不追求极致性能的普通应用程序开发中使用较少。在使用时，应确保清楚地注释代码，以提高其可维护性。
+## 关键字
 
+### final
 
+In java items with the final modifier cannot be changed!
+
+final class final variables and final methods
+
+- A final class cannot be extended by other classs
+- A final variable cannot be reassigned another value
+- A final mthod cannot be overreiden
+
+### static
+
+the static keyword in java is  mainly used for memory management.The static keyword in java is used to share the same variable or method of a given class.
+
+The users can apply static keyword with variables,methods,blocks,and **nested（嵌套的）** classes.
+
+The static keyword belongs to the class than an instance of the class.
+
+The static keyword is used for a **constant(n 常量 adj 不变的）** variable or a method that is the same for every instance of a class
+
+For
+
+- variable
+- blocks
+- methods
+- classes
+
+#### member
+
+when a member is declared static,it can be accessed before any objects of its class are created
+
+and without reference to any object
+
+```java
+class Test
+    {
+        static void m1(){
+        "from m1".sout
+            }
+
+        main{
+            m1();
+        }
+    }
+
+output:
+ from m1
+```
+
+#### static block
+
+if you need to do the computation in order to initialize your static variables,you can declare a static block that gets executed(执行 实施） exactly once, when the class is first loaded
+
+```java
+class Test{
+ static int a = 10;
+    static int b;
+    static{
+        "static block initialized".sout
+            b = a* 4;
+    }
+    main{
+        a.sout;
+        b.sout;
+    }
+}
+
+output:
+10
+40
+```
+
+#### static variable
+
+当将变量声明为静态时，则在类级别的所有对象之间创建并共享该变量的单个副本。 静态变量基本上是**（（（本质的）全局变量。类的所有实例共享相同的静态变量。
+
+important points for static variables:
+- we can create static variables at the class level only
+
+```java
+public class Test3 {
+    public static void main(String[] args) {
+        System.out.println(fun());
+    }
+
+    static int fun(){
+        static int x = 10; //Error static local variable are not allow
+        return  x--;
+    }
+}
+
+```
+
+In java, a static variable is a class variable(for whole calss) so if we have static
+
+**local（局部的 当地的 本地的）** variable(a variable with scope limited to function) it **violates(违反 违背**） the purpose of static. hence compiled does not allow static local variable.
+
+- static block and static variables are executed in the order they are present in a program
+
+```java
+public class Test2 {
+    static int a  = m1();
+
+    static {
+        System.out.println("inside static block");
+    }
+
+    static int m1(){
+        System.out.println("from m1");
+        return 20;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("from main");
+        System.out.println(a);
+    }
+}
+
+output:
+
+from m1
+inside static block
+from main
+20
+```
+
+#### static methods
+
+当用静态关键字声明方法时，它是konwn作为静态方法。静态方法的最常见示例是main（）方法。
+
+如上所述，可以在创建其类的任何对象并且不参考任何对象之前访问任何静态成员。被声明为静态的方法具有Servel限制：
+
+ - 他们只能直接调用其他静态方法
+ - 他们只能直接访问静态数据
+   - 静态方法是属于类的，而不是类的某个特定对象实例。因此，在静态方法的执行过程中，没有this引用，这意味着它们无法直接访问实例变量或实例方法
+   - 静态成员（包括静态变量和静态方法）在类被加载到JVM时就已经存在，而不需要创建类的任何对象实例。这就意味着静态方法可以在没有任何对象实例存在的情况下被调用。如果静态方法被允许访问非静态成员，那么在**没有实例化对象的情况下，这些非静态成员根本就不存在**，从而可能导致运行时错误
+ - They cannot refer to this or super in any way
+
+```java
+package Static;
+
+public class Test4 {
+    static int a = 10;
+
+    int b =10;
+    void m2(){
+        System.out.println("from m2");
+    }
+    static void m1(){
+        a = 20;
+        System.out.println("from m1");
+//        b = 20;  cannot make a static reference to the non-static field;
+//        m2(); cannot make a static reference to the non-static method m2()
+//        System.out.println(super.a);
+    }
+}
+
+```
+
+#### static classes
+
+只有当它是嵌套类（内类）时，才能使一个类成为静态
+
+我们无法用静态修饰符声明顶级类，但可以将嵌套类声明为静态类。类型的类称为嵌套静态类。固定的静态类不需要外部类的引用。 在这种情况下（（案例）（案例）（案例）**），静态类无法访问外部类的非静态成员。
+
+Java允许在另一个类中定义类。这些类别称为嵌套的Calsses。类别可以是静态的，
+作为内部类；
+如果没有外部类的实例，就无法创建内部类的实例，因此内部类实例可以访问其外部类的所有成员，而无需使用对外部类实例的参考。出于此原因，内部类可以 帮助使程序简单简洁；
+**可以在不实例化外部类的情况下实例化静态嵌套类。**
+
+```java
+package Static;
+
+public class StaticNestedClass {
+    private static String str = "this is jasper";
+
+    static class NestedClass{
+        public void disp(){
+            System.out.println(str);
+        }
+    }
+
+    public static void main(String[] args) {
+        NestedClass nestedClass = new NestedClass();
+        nestedClass.disp();
+    }
+}
+
+```
+
+### when to use static variavble and methods
+
+为所有对象共有的属性使用静态变量。例如，在班级学生中，所有学生共享相同的大学名称，使用静态方法来更改静态变量；
+```java
+package Static;
+
+public class Student {
+    String name;
+    int id;
+    static String collegeName;
+    static int counter = 0;
+
+    public Student(String name) {
+        this.name = name;
+        this.id=setid();
+    }
+
+    static int setid(){
+        counter++;
+        return counter;
+    }
+
+    static void setCollegeName(String name){
+        collegeName = name;
+    }
+
+    void getStudentInfo(){
+        System.out.println("name:" + this.name);
+        System.out.println("id:" + this.id);
+        System.out.println("collegeName:" + collegeName);
+    }
+
+    public static void main(String[] args) {
+        Student.setCollegeName("xupt");
+        Student jasper = new Student("jasper");
+        Student cliff = new Student("cliff");
+        jasper.getStudentInfo();
+        cliff.getStudentInfo();
+    }
+}
+```
+![alt text](./assets/07static.png)
 ## Q&A
 short s1 = 1; s1 = s1 + 1;有错吗?short s1 = 1; s1 += 1;有错吗 
 对于 short s1 = 1; s1 = s1 + 1;由于 1 是 int 类型，因此 s1+1 运算结果也是  int型，需要强制转换类型才能赋值给 short 型。
