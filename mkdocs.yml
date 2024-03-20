@@ -31,3 +31,23 @@ extra:
 plugins:
   - search
 # Page tree
+nav:
+  - Java:
+      - basic: 'java/basic.md'
+      - object-oriented: 'java/object-oriented.md'
+      - 异常: 'java/异常.md'
+      - 注解: 'java/注解.md'
+      - 泛型: 'java/泛型.md'
+      - 反射: 'java/反射.md'
+      - 集合: 'java/集合.md'
+      - IO: 'java/IO.md'
+      - 多线程: 'java/多线程.md'
+      - 网络编程: 'java/网络编程.md'
+      - terminology: 'java/terminology.md'
+  - database:
+      - mysql:
+          - jdbc: 'database/mysql/jdbc.md'
+      - redis:
+          - basic: 'database/redis/index.md'
+
+
