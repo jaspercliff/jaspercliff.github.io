@@ -44,6 +44,7 @@ nav:
       - 多线程: 'java/多线程.md'
       - 网络编程: 'java/网络编程.md'
       - terminology: 'java/terminology.md'
+      - utils: 'java/utils.md'
   - database:
       - mysql:
           - jdbc: 'database/mysql/jdbc.md'

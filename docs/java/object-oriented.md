@@ -129,3 +129,112 @@ public interface MyInterface {
 
 ## Object
 所有类的父类
+
+
+## 内部类
+Java内部类是定义在另一个类的内部的类。这种结构使得内部类能够访问其外部类的成员，包括私有成员。
+内部类主要用于将一些逻辑紧密地封装在某个类的内部，而不是暴露给整个包。使用内部类可以使代码更加模块化和封装
+Java内部类是定义在另一个类的内部的类。这种结构使得内部类能够访问其外部类的成员，包括私有成员。内部类主要用于将一些逻辑紧密地封装在某个类的内部，而不是暴露给整个包。使用内部类可以使代码更加模块化和封装。
+
+内部类主要分为以下几种：
+
+###  成员内部类（Non-static Nested Class）
+
+成员内部类是最常见的内部类类型，它需要依附于外部类的对象实例。成员内部类可以无条件访问外部类的所有成员，包括私有成员。
+
+``` java
+public class OuterClass {
+    private int value = 10;
+
+    class InnerClass {
+        public void printValue() {
+            System.out.println("Value: " + value);
+        }
+    }
+}
+```
+
+###  静态内部类（Static Nested Class）
+
+静态内部类与成员内部类类似，但是被声明为静态（`static`）。静态内部类不需要外部类的对象实例就可以被创建。它不能直接访问外部类的实例成员，只能访问外部类的静态成员。
+
+``` java
+public class OuterClass {
+    private static int value = 10;
+
+    static class StaticInnerClass {
+        public void printValue() {
+            System.out.println("Value: " + value);
+        }
+    }
+}
+```
+
+###  局部内部类（Local Inner Class）
+
+局部内部类是在一个块内部（如方法或者任意作用域内）定义的类。它不同于成员内部类，因为它的作用域被限定在声明它的块中。
+
+``` java
+public class OuterClass {
+    public void someMethod() {
+        class LocalInnerClass {
+            public void printMessage() {
+                System.out.println("Inside someMethod");
+            }
+        }
+        LocalInnerClass lic = new LocalInnerClass();
+        lic.printMessage();
+    }
+}
+```
+
+###  匿名内部类（Anonymous Inner Class）
+
+匿名内部类是没有名字的内部类，通常用于只需要使用一次的场景。它们通常用于接口或抽象类的实例化。
+
+``` java
+new Thread(new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("Anonymous Inner Class");
+    }
+}).start();
+```
+
+内部类的使用有助于使代码更加简洁且具有更好的封装性，但也增加了复杂性。合理使用内部类可以使设计更加灵活，更好地将实现细节隐藏起来。
+
+[//]: # (### 合成构造函数)
+
+[//]: # (在Java中，合成构造函数是由编译器自动生成的构造函数，主要用于在某些特定的场景下，)
+
+[//]: # (如内部类访问其外部类的私有成员时，提供必要的访问权限。)
+
+[//]: # (合成构造函数并不直接出现在源代码中，但在编译后的字节码中可以看到它们的存在)
+
+[//]: # (``` java)
+
+[//]: # (public class OuterClass {)
+
+[//]: # (    private int privateField = 1;)
+
+[//]: # ()
+[//]: # (    private class InnerClass {)
+
+[//]: # (        void show&#40;&#41; {)
+
+[//]: # (            System.out.println&#40;"Accessing private field: " + privateField&#41;;)
+
+[//]: # (        })
+
+[//]: # (    })
+
+[//]: # (})
+
+[//]: # ()
+[//]: # (```)
+
+[//]: # (- OuterClass.class 是 OuterClass 这个外部类的编译结果。当你编译包含 OuterClass 的 .java 文件时，会生成这个 .class 文件。)
+
+[//]: # (- OuterClass$InnerClass1.class 是 OuterClass 中定义的一个内部类 InnerClass1 的编译结果。在Java中，内部类被编译成它们自己的 .class 文件，)
+
+[//]: # (这个文件的命名约定是 外部类名$内部类名.class。这样的命名表示 InnerClass1 是 OuterClass 的一个内部类。)
