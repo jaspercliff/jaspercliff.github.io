@@ -9,13 +9,13 @@ theme:
   logo: /assets/img/logo.png
   features:
   - navigation.instant
+  - navigation.instant.progress
   - navigation.top
   - search.suggest
   - search.highlight
   - navigation.path
   - navigation.tabs
   - navigation.tabs.sticky
-  - navigation.sections
 extra_css:
   - assets/stylesheets/extra.css
 extra_javascript:
@@ -39,7 +39,9 @@ nav:
       - 注解: 'java/注解.md'
       - 泛型: 'java/泛型.md'
       - 反射: 'java/反射.md'
-      - 集合: 'java/集合.md'
+      - 集合:
+          - index: 'java/集合.md'
+          - ArrayList: 'java/collection/ArrayList.md'
       - IO: 'java/IO.md'
       - 多线程: 'java/多线程.md'
       - 网络编程: 'java/网络编程.md'
@@ -50,5 +52,11 @@ nav:
           - jdbc: 'database/mysql/jdbc.md'
       - redis:
           - basic: 'database/redis/index.md'
+  - spring:
+      - springFramework:
+          - index: 'java/basic.md'
+          - 过滤器.拦截器.spring切面
+      - springboot:
+          - index: ''
 
 
