@@ -68,11 +68,13 @@ nav:
           - jdbc: 'database/mysql/jdbc.md'
       - redis:
           - basic: 'database/redis/index.md'
-#  - spring:
-#      - springFramework:
-#          - index: ''
-#          - 过滤器.拦截器.spring切面: ''
-#      - springboot:
-#          - index: ''
+  - 设计模式:
+    - 代理模式: 'designpattern/proxy.md'
+  #  - spring:
+  #      - springFramework:
+  #          - index: ''
+  #          - 过滤器.拦截器.spring切面: ''
+  #      - springboot:
+  #          - index: ''
 
 
