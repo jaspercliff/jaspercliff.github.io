@@ -63,6 +63,7 @@ map.forEach((key, value) -> System.out.println(key + " = " + value));
 ## source code
 
 数组+链表+红黑树
+![](assets/hashMapPut.png)
 
 ``` java
 public class HashMap<K,V> extends AbstractMap<K,V>

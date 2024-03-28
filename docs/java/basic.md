@@ -5,16 +5,117 @@
 ### 基本数据类型
 
 
-| 基本类型 | 位数 | 字节 | 默认值  | 取值范围                                   |
-| -------- | ---- | ---- | ------- | ------------------------------------------ |
-| byte     | 8    | 1    | 0       | -128 ~ 127                                 |
-| short    | 16   | 2    | 0       | -32768 ~ 32767                             |
-| int      | 32   | 4    | 0       | -2147483648 ~ 2147483647                   |
-| long     | 64   | 8    | 0L      | -9223372036854775808 ~ 9223372036854775807 |
-| char     | 16   | 2    | 'u0000' | 0 ~ 65535                                  |
-| float    | 32   | 4    | 0f      | 1.4E-45 ~ 3.4028235E38                     |
-| double   | 64   | 8    | 0d      | 4.9E-324 ~ 1.7976931348623157E308          |
-| boolean  | 1    |      | false   | true、false                                |
+| 基本类型    | 位数 | 字节 | 默认值     | 取值范围                                       |
+|---------|----|----|---------|--------------------------------------------|
+| byte    | 8  | 1  | 0       | -128 ~ 127                                 |
+| short   | 16 | 2  | 0       | -32768 ~ 32767                             |
+| int     | 32 | 4  | 0       | -2147483648 ~ 2147483647                   |
+| long    | 64 | 8  | 0L      | -9223372036854775808 ~ 9223372036854775807 |
+| char    | 16 | 2  | 'u0000' | 0 ~ 65535                                  |
+| float   | 32 | 4  | 0f      | 1.4E-45 ~ 3.4028235E38                     |
+| double  | 64 | 8  | 0d      | 4.9E-324 ~ 1.7976931348623157E308          |
+| boolean | 1  |    | false   | true、false                                 |
+### 浮点数
+#### 浮点数得精度运算
+
+无限循环的小数存储在计算机中，多余的只能截断
+
+```bash
+float a = 2.0f-1.0f;
+        float b= 1.8f-1.7f;
+        System.out.println(a == b);
+output:false
+```
+
+- 解决精度丢失
+  - BigDecimal
+
+```bash
+BigDecimal c = new BigDecimal("1.0");
+        BigDecimal d = new BigDecimal("0.9");
+        System.out.println(c.subtract(d));
+```
+
+java中 Long是最大的正数类型64位
+
+超过则使用 BigInteger 内部使用int[]数组存储任意大小的整形数据
+#### BigDecimal
+
+实现对浮点数的运算不会造成精度丢失
+
+优先推荐入参为String的构造方法，或者BigDecimal.valueof(double)，double的toString会按照double的实际能表达的精度对尾数截断
+
+``` java
+BigDecimal bigDecimal = new BigDecimal(0.1F);
+        System.out.println("bigDecimal = " + bigDecimal);
+        BigDecimal bigDecimal1 = new BigDecimal("0.1");
+        System.out.println("bigDecimal1 = " + bigDecimal1);
+        BigDecimal bigDecimal2 = BigDecimal.valueOf(0.1f);
+        System.out.println("bigDecimal2 = " + bigDecimal2);
+
+bigDecimal = 0.100000001490116119384765625
+bigDecimal1 = 0.1
+bigDecimal2 = 0.10000000149011612
+```
+
+``` java
+public static BigDecimal valueOf(double val) {
+        // Reminder: a zero double returns '0.0', so we cannot fastpath
+        // to use the constant ZERO.  This might be important enough to
+        // justify a factory approach, a cache, or a few private
+        // constants, later.
+        return new BigDecimal(Double.toString(val));
+    }
+```
+
+#### 大小比较
+
+`a.compareTo(b)`: 返回 -1 表示`a`小于`b`，0 表示`a`等于`b`， 1 表示`a`大于`b`。
+
+`BigDecimal a = new BigDecimal("1.0");
+BigDecimal b = new BigDecimal("0.9");
+System.out.println(a.compareTo(b));// 1`
+
+#### 等值比较
+
+应该使用compareto而不是equals
+
+``` java
+public class Demo2 {
+    public static void main(String[] args) {
+        BigDecimal bigDecimal = new BigDecimal("1");
+        BigDecimal bigDecimal1 = new BigDecimal("1.0");
+        System.out.println(bigDecimal1.equals(bigDecimal));
+        System.out.println(bigDecimal1.compareTo(bigDecimal));
+    }
+}
+
+false
+0
+```
+
+``` java
+@Override
+    public boolean equals(Object x) {
+        if (!(x instanceof BigDecimal))
+            return false;
+        BigDecimal xDec = (BigDecimal) x;
+        if (x == this)
+            return true;
+        if (scale != xDec.scale)
+            return false;
+        long s = this.intCompact;
+        long xs = xDec.intCompact;
+        if (s != INFLATED) {
+            if (xs == INFLATED)
+                xs = compactValFor(xDec.intVal);
+            return xs == s;
+        } else if (xs != INFLATED)
+            return xs == compactValFor(this.intVal);
+
+        return this.inflated().equals(xDec.inflated());
+    }
+```
 
 ### 自动转换
 
@@ -22,7 +123,7 @@
   (byte，short，char) < int < long < float < double
 - 整型类型和浮点型进行计算后，结果会转为浮点类型
 
-```java
+``` java
 long x = 30;
 float y = 14.3f;
 System.out.println("x/y = " + x/y);
@@ -40,7 +141,7 @@ x/y = 1.9607843
 强制转换使用括号 () 。
 引用类型也可以使用强制转换
 
-```JAVA
+``` JAVA
 float f = 25.5f;
 int x = (int)f;
 System.out.println("x = " + x);
@@ -50,7 +151,7 @@ System.out.println("x = " + x);
 
 基本类型都有对应的包装类型，基本类型与其对应的包装类型之间的赋值使用自动装箱与拆箱完成。
 
-```java
+``` java
 Integer x = 2;     // 装箱
 int y = x;         // 拆箱
 ```
@@ -58,7 +159,7 @@ int y = x;         // 拆箱
 - new Integer(123) 每次都会新建一个对象
 - Integer.valueOf(123) 会使用缓存池中的对象，多次调用会取得同一个对象的引用。
 
-```java
+``` java
 Integer a= new Integer(123);
 Integer b = new Integer(123);
 System.out.println(a == b);    // false
@@ -69,7 +170,7 @@ System.out.println(c == d);   // true
 
 编译器会**在缓冲池范围内的基本类型**自动装箱过程调用 valueOf() 方法，因此多个 Integer 实例使用自动装箱来创建并且值相同，那么就会引用相同的对象
 
-```java
+``` java
 public static Integer valueOf(int i) {
         if (i >= IntegerCache.low && i <= IntegerCache.high)
             return IntegerCache.cache[i + (-IntegerCache.low)];
@@ -150,7 +251,7 @@ Integer c1 = 33;//装箱
 
 Java中的集合类只能接收对象类型
 
-```java
+``` java
 List<Integer> li = new ArrayList<>();
  for (int i = 1; i < 50; i ++){  
     li.add(i); 
@@ -167,7 +268,7 @@ List<Integer> li = new ArrayList<>();
 
 对Integer对象与基本类型
 
-```java
+``` java
 Integer a=1;
  System.out.println(a==1?"等于":"不等于");
  Boolean bool=false; 
@@ -185,7 +286,7 @@ Integer a=1;
 
 对Integer对象进行四则运算
 
-```java
+``` java
 Integer i = 10; Integer j = 20; System.out.println(i+j);
 --------------------------------------------------------
         Integer i2 = 10;
@@ -197,7 +298,7 @@ Integer i = 10; Integer j = 20; System.out.println(i+j);
 
 - **场景四、三目运算符的使用**
 
-```java
+``` java
 boolean flag = true; 
 Integer i = 0;
  int j = 1; 
@@ -246,7 +347,7 @@ private final char value[];
 1. value不可变 是value这个引用地址不可变 但是Array数组是可变的
 2. value只是stack上的一个引用，数组是在堆上，堆里数组本身数据是可变的
 
-```java
+``` java
 public class ArrayChangeDemo {
     public static void main(String[] args) {
         final int[] value = {1,2,3};
@@ -265,7 +366,7 @@ public class ArrayChangeDemo {
 - 线程安全 多个线程可以安全的共享String对象
 - String作为参数传递给方法时，不会因为方法内部对String的修改而导致外部产生意外的结果。
 
-```java
+``` java
 package com.jasper.StringDemo;
 
 public class ChangeDemo {
@@ -287,7 +388,7 @@ After method call: Hello
 - String被广泛用作哈希表的键，因为其不可变性保证了哈希码的稳定性，保证哈希值不会频繁的变更
   使用Stringbuilder破坏了hashSet的唯一性
 
-```java
+``` java
 package com.jasper.StringDemo;
 
 import java.util.HashSet;
@@ -315,7 +416,7 @@ output：
 jdk8以后存储在堆中
 JVM为了针对字符串提升性能和减少内存消耗开辟的一块区域，避免字符串的重复创建
 
-```java
+``` java
 package com.jasper.StringDemo.stringdemo;
 
 public class Demo3 {
@@ -337,7 +438,7 @@ output:true
 - 直接使用双引号声明出来的 `String`对象会直接存储在常量池中。
 - 如果不是用双引号声明的 `String`对象，可以使用 `String`提供的 `intern`方法。intern 方法会从字符串常量池中查询当前字符串是否存在，若不存在就会将当前字符串放入常量池中
 
-```java
+``` java
 package com.jasper.StringDemo.stringdemo;
 public class Demo3 {
     public static void main(String[] args) {
@@ -387,7 +488,7 @@ todo
 
 1. **按位与（AND）`&`**: 对两个数的每一位进行逻辑与操作。只有在两个相应位都是1时，结果才是1，否则是0。
 
-```java
+``` java
 int a = 60; // 60 = 0011 1100
 int b = 13; // 13 = 0000 1101
 int c = a & b; // c = 12 = 0000 1100
@@ -395,7 +496,7 @@ int c = a & b; // c = 12 = 0000 1100
 
 2. **按位或（OR）`|`**: 对两个数的每一位进行逻辑或操作。只要有一个相应位是1，结果就是1。
 
-```java
+``` java
 int a = 60; // 60 = 0011 1100
 int b = 13; // 13 = 0000 1101
 int c = a | b; // c = 61 = 0011 1101
@@ -403,7 +504,7 @@ int c = a | b; // c = 61 = 0011 1101
 
 3. **按位异或（XOR）`^`**: 对两个数的每一位进行逻辑异或操作。如果两个相应位值相同，则结果为0，否则为1。
 
-```java
+``` java
 int a = 60; // 60 = 0011 1100
 int b = 13; // 13 = 0000 1101
 int c = a ^ b; // c = 49 = 0011 0001
@@ -411,14 +512,14 @@ int c = a ^ b; // c = 49 = 0011 0001
 
 4. **按位取反（NOT）`~`**: 对一个数的每一位进行取反操作。即1变为0，0变为1。
 
-```java
+``` java
 int a = 60; // 60 = 0011 1100
 int c = ~a; // c = -61 = 1100 0011 (in two's complement form)
 ```
 
 5. **左移位 `<<`**: 将操作数的二进制表示向左移动指定的位数，从右边补0。
 
-```java
+``` java
 int a = 3; // 3 = 0000 0011
 int c = a << 2; // c = 12 = 0000 1100
 ```

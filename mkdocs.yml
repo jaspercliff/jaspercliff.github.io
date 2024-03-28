@@ -49,6 +49,7 @@ nav:
   - Java:
       - basic: 'java/basic.md'
       - object-oriented: 'java/object-oriented.md'
+      - enum: 'java/enum.md'
       - 异常: 'java/异常.md'
       - 注解: 'java/注解.md'
       - 泛型: 'java/泛型.md'
@@ -59,7 +60,11 @@ nav:
           - LinkedList: 'java/collection/LinkedList.md'
           - HashMap: 'java/collection/HashMap.md'
       - IO: 'java/IO.md'
-      - 多线程: 'java/多线程.md'
+      - 线程:
+          - basic: 'java/thread/basic.md'
+          - 线程基础: 'java/thread/线程基础.md'
+          - 线程池: 'java/thread/线程池.md'
+          - 锁: 'java/thread/锁.md'
       - 网络编程: 'java/网络编程.md'
       - terminology: 'java/terminology.md'
       - utils: 'java/utils.md'
@@ -70,11 +75,13 @@ nav:
           - basic: 'database/redis/index.md'
   - 设计模式:
     - 代理模式: 'designpattern/proxy.md'
-  #  - spring:
-  #      - springFramework:
-  #          - index: ''
-  #          - 过滤器.拦截器.spring切面: ''
-  #      - springboot:
-  #          - index: ''
+    - spring:
+#        - springFramework:
+#            - index: ''
+#            - 过滤器.拦截器.spring切面: ''
+#        - springboot:
+#            - index: ''
+        - springSecurity:
+            - index: 'spring/springSecurity/index.md'
 
 
